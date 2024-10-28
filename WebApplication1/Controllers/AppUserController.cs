@@ -94,7 +94,7 @@ public class AppUserController : ControllerBase
         }
     }
     
-    [HttpGet]
+    [HttpGet("active")]
     [Authorize]
     public async Task<IActionResult> GetAllActiveUsers()
     {

@@ -9,6 +9,7 @@ public static class UserMapper
     {
         return new NewUserDto
         {
+            Id = user.Id,
             Username = user.UserName,
             Email = user.Email,
             BirthDate = user.BirthDate,
@@ -20,6 +21,7 @@ public static class UserMapper
     {
         return new NewUserDto
         {
+            Id = user.Id,
             Username = user.UserName,
             Email = user.Email,
             BirthDate = user.BirthDate,

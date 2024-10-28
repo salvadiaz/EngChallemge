@@ -1,24 +1,28 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-EXPOSE 5169
-
+﻿# Use the official .NET SDK image to build and publish the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["WebApplication1/WebApplication1.csproj", "WebApplication1/"]
-RUN dotnet restore "WebApplication1/WebApplication1.csproj"
-COPY . .
-WORKDIR "/src/WebApplication1"
-RUN dotnet build "WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebApplication1.dll"]
+
+# Copy the project files and restore any dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the remaining source code and build the application
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Use the official .NET runtime image to run the application
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Install netcat-openbsd
+RUN apt-get update && apt-get install -y netcat-openbsd
+
+COPY --from=build /app/out ./
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
+# Expose the port the application runs on
+EXPOSE 80
+
+# Run the application
+ENTRYPOINT ["/app/wait-for-it.sh", "db", "--", "dotnet", "WebApplication1.dll"]
