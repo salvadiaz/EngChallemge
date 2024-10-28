@@ -38,7 +38,7 @@ To run the application, you need Docker Compose. Follow these steps:
 
 Once the application is running, you can access the Swagger documentation at:
 ```
-http://localhost:5000/swagger/index.html
+http://localhost:5169/swagger/index.html
 ```
 
 ## Endpoints
