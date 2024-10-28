@@ -62,11 +62,13 @@ public class AppUserController : ControllerBase
     
     [HttpPatch("{userId}")]
     [Authorize]
-    public async Task<IActionResult> UpdateActiveStatus([FromRoute] string userId, [FromBody] bool status)
+    public async Task<IActionResult> UpdateActiveStatus([FromRoute] string userId, [FromBody] UpdateStatusDto body)
     {
         try
         {
-            var updatedUser = await _userService.UpdateActiveStatus(status, userId);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
+            var updatedUser = await _userService.UpdateActiveStatus(body.Status, userId);
             if (updatedUser == null) return NotFound("User not found");
             
             return Ok(updatedUser.toDto());
