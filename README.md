@@ -27,10 +27,12 @@ Your implementation should provide the following endpoints:
 
 To run the application, you need Docker Compose. Follow these steps:
 
-1. Ensure Docker and Docker Compose are installed on your machine.
+1. Ensure git, Docker and Docker Compose are installed on your machine.
 2. Navigate to the project directory.
 3. Run the following command to start the application:
    ```sh
+   git clone git@github.com:salvadiaz/EngChallenge.git
+   cd EngChallenge
    docker-compose up -d
    ```
 
