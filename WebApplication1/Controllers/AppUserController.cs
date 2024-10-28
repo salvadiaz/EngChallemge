@@ -121,7 +121,7 @@ public class AppUserController : ControllerBase
 
         if (!result.Succeeded) return Unauthorized("Username not found or invalid password");
 
-        var token = _tokenService.CreateToken(user);
+        var token = await _tokenService.CreateToken(user);
         return Ok(user.ToLoggedUserDto(token));
     }
 }
