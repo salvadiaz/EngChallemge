@@ -49,7 +49,7 @@ The following endpoints do not require authorization:
 
 - **Register a New User**: `POST /api/users`
 - **Log In**: `POST /api/users/login`
-The password must be at least 8 characters long and contain at least:
+- The password must be at least 8 characters long and contain at least:
   - One digit (0-9),
   - One lowercase letter (a-z),
   - One uppercase letter (A-Z),
